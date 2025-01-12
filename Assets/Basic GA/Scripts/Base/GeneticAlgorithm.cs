@@ -38,19 +38,28 @@ public class GeneticAlgorithm<T>
             return;
         }
         CalculateFitness();
+
+        var sortedPopulation = Population.OrderByDescending(x => x.Fitness).ToList();
+        
         _newPopulation.Clear();
         for (int i = 0; i < Population.Count; i++)
         {
-            DNA<T> parent1 = ChooseParent();
-            DNA<T> parent2 = ChooseParent();
-            var child = parent1.Crossover(parent2);
-            child.Mutate(MutationRate);
-            _newPopulation.Add(child);
+            if (i < 5 && Population.Count > 5)
+            {
+                _newPopulation.Add(sortedPopulation[i]);
+            }
+            else
+            {
+                // DNA<T> parent1 = ChooseParent();
+                // DNA<T> parent2 = ChooseParent();
+                ChooseParent(out var parent1, out var parent2);
+                var child = parent1.Crossover(parent2);
+                child.Mutate(MutationRate);
+                _newPopulation.Add(child);
+            }
         }
         Population = new List<DNA<T>>(_newPopulation);
         Generation++;
-        Debug.Log("Gen "+ Generation + ": " + BestFitness);
-        Debug.Log(BestGenes.Aggregate("", (current, t) => current + (t + " ")));
     }
 
     public void CalculateFitness()
@@ -70,6 +79,7 @@ public class GeneticAlgorithm<T>
     }
     private DNA<T> ChooseParent()
     {
+        // high fitness has higher chance to be chosen
         var randomValue = Random.value * _fitnessSum;
         for (int i = 0; i < Population.Count; i++)
         {
@@ -80,6 +90,29 @@ public class GeneticAlgorithm<T>
             randomValue -= Population[i].Fitness;
         }
         return null;
+    }
+
+    void ChooseParent(out DNA<T> parent1, out DNA<T> parent2)
+    {
+        parent1 = null;
+        parent2 = null;
+        // Tournament selection
+        int selectionCount = 5;
+        if (Population.Count > 5)
+        {
+            // select a random group then choose 2 best from that group
+            var tournament = Population.OrderBy(x => Random.value)
+                .Take(selectionCount)
+                .OrderByDescending(x => x.Fitness)
+                .ToList();
+            parent1 = tournament[0];
+            parent2 = tournament[1];
+        }
+        else
+        {
+            parent1 = Population[Random.Range(0, Population.Count)];
+            parent2 = Population[Random.Range(0, Population.Count)];
+        }
     }
     
 }

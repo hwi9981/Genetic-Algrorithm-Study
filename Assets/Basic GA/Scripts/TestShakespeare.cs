@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -13,12 +14,6 @@ public class TestShakespeare : MonoBehaviour
 
     [Header("Other")] 
     [SerializeField] private int numCharsPerText = 15000;
-    [SerializeField] private Text targetText;
-    [SerializeField] private Text bestText;
-    [SerializeField] private Text bestFitnessText;
-    [SerializeField] private Text numGenerationsText;
-    [SerializeField] private Transform populationTextParent;
-    [SerializeField] private Text textPrefab;
     
     private GeneticAlgorithm<char> ge;
 
@@ -31,9 +26,11 @@ public class TestShakespeare : MonoBehaviour
     private void Update()
     {
         ge.NewGeneration();
+        Debug.Log("Gen "+ ge.Generation + ": " + ge.BestFitness);
+        Debug.Log(ge.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
         if (Mathf.Approximately(ge.BestFitness, 1))
         {
-            Debug.Log(ge.Generation);
+            Debug.Log("Result: " + ge.Generation + " - " + ge.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
             enabled = false;
         }
     }
@@ -52,6 +49,9 @@ public class TestShakespeare : MonoBehaviour
             if (dna.Genes[i] == targetString[i])
             {
                 score += 1;
+            }else
+            {
+                score -= 0.1f; //improve fitness, higher score means more character correct
             }
         }
         score /= targetString.Length;
