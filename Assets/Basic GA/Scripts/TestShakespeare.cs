@@ -11,9 +11,6 @@ public class TestShakespeare : MonoBehaviour
     [SerializeField] private string validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.|!#$%&/()=?[]{}+-*'_ ";
     [SerializeField] private int populationSize = 200;
     [SerializeField] private float mutationRate = 0.01f;
-
-    [Header("Other")] 
-    [SerializeField] private int numCharsPerText = 15000;
     
     private GeneticAlgorithm<char> ge;
 
