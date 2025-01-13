@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace BasicGA
+namespace Jigsaw_Puzzle.Scripts
 {
     public class GeneticAlgorithm<T>
     {

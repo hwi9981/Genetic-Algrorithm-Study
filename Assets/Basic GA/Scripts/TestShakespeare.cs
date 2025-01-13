@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BasicGA;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -12,22 +13,22 @@ public class TestShakespeare : MonoBehaviour
     [SerializeField] private int populationSize = 200;
     [SerializeField] private float mutationRate = 0.01f;
     
-    private GeneticAlgorithm<char> ge;
+    private GeneticAlgorithm<char> _ga;
 
     void Start()
     {
         // targetText.text = targetString;
-        ge = new GeneticAlgorithm<char>(populationSize, targetString.Length, mutationRate, GetRandomCharacter, FitnessFunction);
+        _ga = new GeneticAlgorithm<char>(populationSize, targetString.Length, mutationRate, GetRandomCharacter, FitnessFunction);
     }
 
     private void Update()
     {
-        ge.NewGeneration();
-        Debug.Log("Gen "+ ge.Generation + ": " + ge.BestFitness);
-        Debug.Log(ge.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
-        if (Mathf.Approximately(ge.BestFitness, 1))
+        _ga.NewGeneration();
+        Debug.Log("Gen "+ _ga.Generation + ": " + _ga.BestFitness);
+        Debug.Log(_ga.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
+        if (Mathf.Approximately(_ga.BestFitness, 1))
         {
-            Debug.Log("Result: " + ge.Generation + " - " + ge.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
+            Debug.Log("Result: " + _ga.Generation + " - " + _ga.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
             enabled = false;
         }
     }
@@ -40,7 +41,7 @@ public class TestShakespeare : MonoBehaviour
     private float FitnessFunction(int index)
     {
         float score = 0;
-        DNA<char> dna = ge.Population[index];
+        DNA<char> dna = _ga.Population[index];
         for (int i = 0; i < dna.Genes.Length; i++)
         {
             if (dna.Genes[i] == targetString[i])

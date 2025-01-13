@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace BasicGA
+namespace Jigsaw_Puzzle.Scripts
 {
     public class DNA<T>
     {

@@ -25,6 +25,7 @@ namespace Jigsaw_Puzzle.Scripts
         {
             Generate();
         }
+        public Tile GetRandomTile() => _tiles[Random.Range(0, _tiles.Count)];
 
         #region Initization
         void Generate()
