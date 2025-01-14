@@ -17,7 +17,7 @@ namespace Jigsaw_Puzzle.Scripts
                 _levelCompleteUI.SetActive(true);
             }
         }
-        public void ResetGame()
+        public virtual void ResetGame()
         {
             _boardGen.ResetBoard();
         }

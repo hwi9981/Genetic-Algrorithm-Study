@@ -7,37 +7,51 @@ namespace Jigsaw_Puzzle.Scripts
 {
     public class Tile : MonoBehaviour
     {
-        public Vector2Int Target;
-        public Vector2Int Current;
-        [SerializeField] private SpriteRenderer _renderer;
-        private bool _isLocked = false;
-        
-        public bool IsCorrect() => Target == Current;
+        // public Vector2Int target;
+        // public Vector2Int current;
+        public TileData data = new TileData();
+        public SpriteRenderer spriteRenderer;
+        public void SetCurrent(Vector2Int position) => data.current = position;
+        public void SetTarget(Vector2Int position) => data.target = position;
+        public bool IsCorrect() => data.IsCorrect();
         public void Init(Vector2Int position, Sprite sprite)
         {
-            Target = position;
-            _renderer.sprite = sprite;
+            SetTarget(position);
+            data.sprite = sprite;
+            // target = position;
+            spriteRenderer.sprite = sprite;
         }
-        public void Lock()
+        public void CopyData(TileData otherData)
         {
-            _isLocked = true; // Khóa tile
-        }
-
-        public bool IsLocked()
-        {
-            return _isLocked;
+            // data.Copy(otherData);
+            data = otherData;
+            if (spriteRenderer && otherData.sprite)
+                spriteRenderer.sprite = otherData.sprite;
         }
 
         public void OnStartDrag()
         {
-            _renderer.sortingOrder = 10; // Để tile được hiển thị lên trước các tile khác
+            spriteRenderer.sortingOrder = 10; // Để tile được hiển thị lên trước các tile khác
         }
 
         public void OnEndDrag()
         {
-            _renderer.sortingOrder = 0;
+            spriteRenderer.sortingOrder = 0;
         }
+    }
 
-        
+    [System.Serializable]
+    public struct TileData
+    {
+        public Vector2Int target;
+        public Vector2Int current;
+        public Sprite sprite;
+        public bool IsCorrect() => target == current;
+        public void Copy(TileData other)
+        {
+            target = other.target;
+            current = other.current;
+            sprite = other.sprite;
+        }
     }
 }

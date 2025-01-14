@@ -18,21 +18,21 @@ namespace Jigsaw_Puzzle.Scripts
 
         private Vector2 _toCenterOffset;
         
-        private Tile[,] _slots; // Mảng lưu trữ các mảnh ghép
-        private List<Tile> _tiles = new List<Tile>();
+        private Tile[,] _slots; // Mảng lưu trữ thông tin các mảnh đã ghép
+        private List<Tile> _tiles = new List<Tile>(); // lưu trữ các mảnh ban đầu
         
-        void Start()
+        void Awake()
         {
             Generate();
         }
         public Tile GetRandomTile() => _tiles[Random.Range(0, _tiles.Count)];
-
+        public List<Tile> GetTiles() => _tiles;
         #region Initization
         void Generate()
         {
             AddBackgroundImage();
             GeneratePuzzlePieces();
-            ArrangeAllPiecesBelowImage();
+            ArrangeAllPiecesBelowImage(_tiles);
         }
 
         void AddBackgroundImage()
@@ -123,12 +123,12 @@ namespace Jigsaw_Puzzle.Scripts
             float yPos = -(row * (_worldPieceHeight)) + _toCenterOffset.y;
             return new Vector2(xPos, yPos);
         }
-        void ArrangeAllPiecesBelowImage(float yOffset = 0.5f)
+        public void ArrangeAllPiecesBelowImage(List<Tile> tiles,float yOffset = 0.5f)
         {
-            foreach (Tile tile in _tiles)
+            foreach (Tile tile in tiles)
             { 
                 ArrangeSinglePiecesBelowImage(tile, yOffset);
-                tile.Current = new Vector2Int(-1, -1); // Reset vị trí hiện tại của tile
+                tile.SetCurrent(new Vector2Int(-1, -1)); // Reset vị trí hiện tại của tile
             }
         }
         void ArrangeSinglePiecesBelowImage(Tile tile, float yOffset = 0.5f)
@@ -146,7 +146,7 @@ namespace Jigsaw_Puzzle.Scripts
         public void ResetBoard()
         {
             _slots = new Tile[rows, columns];
-            ArrangeAllPiecesBelowImage();
+            ArrangeAllPiecesBelowImage(_tiles);
         }
 
         #endregion
@@ -180,7 +180,7 @@ namespace Jigsaw_Puzzle.Scripts
             if (closestDistance <= snapThreshold)
             {
                 StickTileToBoard(tile, (int)targetGridPosition.x, (int)targetGridPosition.y);
-                tile.Lock(); 
+                // tile.Lock(); 
             }
         }
 
@@ -218,25 +218,42 @@ namespace Jigsaw_Puzzle.Scripts
                     {
                         if (_slots[row, col] == tile) // Nếu tìm thấy Tile trong mảng
                         {
-                            _slots[row, col].Current = new Vector2Int(-1, -1);
+                            _slots[row, col].SetCurrent(new Vector2Int(-1, -1));
                             _slots[row, col] = null; // Gán phần tử đó bằng null
                             break; // Thoát khỏi vòng lặp
                         }
                     }
                 }
             }
-
         }
+
+        public void RemoveAllTilesFromSlots()
+        {
+            for (int i = 0; i < _slots.GetLength(0); i++)
+            {
+                for (int j = 0; j < _slots.GetLength(1); j++)
+                {
+                    var tile = _slots[i, j];
+                    if (tile != null)
+                    {
+                        tile.SetCurrent(new Vector2Int(-1, -1));
+                        _slots[i, j] = null;
+                    }
+                }
+            }
+            // _slots = new Tile[rows, columns]; 
+        }
+
         public void StickTileToBoard(Tile tile, int row, int column)
         {
-            if (_slots[row, column] != null)
-            {
-                Debug.Log("Slot is not empty!");
-                ArrangeSinglePiecesBelowImage(tile);
-                return;
-            }
+            // if (_slots[row, column] != null)
+            // {
+            //     Debug.Log("Slot is not empty!");
+            //     ArrangeSinglePiecesBelowImage(tile);
+            //     return;
+            // }
             _slots[row, column] = tile;
-            tile.Current = new Vector2Int(row, column);
+            tile.SetCurrent(new Vector2Int(row, column));
             tile.transform.position = TileWorldPosition(row, column);
         }
 
