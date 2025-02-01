@@ -5,15 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class TestShakespeare : MonoBehaviour
+public class TestBasicGA : MonoBehaviour
 {
     [Header("Genetic Algorithm Settings")] 
-    [SerializeField] private string targetString = "To be, or not to be";
-    [SerializeField] private string validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.|!#$%&/()=?[]{}+-*'_ ";
-    [SerializeField] private int populationSize = 200;
-    [SerializeField] private float mutationRate = 0.01f;
+    [SerializeField] protected string targetString = "To be, or not to be";
+    protected const string validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.|!#$%&/()=?[]{}+-*'_ ";
+    [SerializeField] protected int populationSize = 200;
+    [SerializeField] protected float mutationRate = 0.05f;
     
-    private GeneticAlgorithm<char> _ga;
+    protected GeneticAlgorithm<char> _ga;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class TestShakespeare : MonoBehaviour
         _ga = new GeneticAlgorithm<char>(populationSize, targetString.Length, mutationRate, GetRandomCharacter, FitnessFunction);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         _ga.NewGeneration();
         Debug.Log("Gen "+ _ga.Generation + ": " + _ga.BestFitness);
