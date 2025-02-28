@@ -30,6 +30,15 @@ namespace Jigsaw_Puzzle.Scripts
                 Genes[i] = _getRandomGene();
             }
         }
+        public void CreateGenes(T[] genes)
+        {
+            if (Genes.Length != genes.Length)
+            {
+                Debug.LogError("Genes length is not equal to the length of the given array");
+                return;
+            }
+            Genes = genes;
+        }
         public float CalculateFitness(int index)
         {
             Fitness = _fitnessFunction(index);
@@ -52,7 +61,10 @@ namespace Jigsaw_Puzzle.Scripts
             {
                 if (Random.value < mutationRate)
                 {
-                    Genes[i] = _getRandomGene();
+                    // Genes[i] = _getRandomGene();
+                    //swap with a random gene in genes array
+                    int randomIndex = Random.Range(0, Genes.Length);
+                    (Genes[i], Genes[randomIndex]) = (Genes[randomIndex], Genes[i]);
                 }
             }
         }

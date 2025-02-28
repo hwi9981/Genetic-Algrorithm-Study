@@ -18,7 +18,7 @@ namespace Jigsaw_Puzzle.Scripts
         private List<DNA<T>> _newPopulation = new List<DNA<T>>();
         private float _fitnessSum = 0;
 
-        public GeneticAlgorithm(int populationSize, int dnaSize, float mutationRate, Func<T> getRandomGene, Func<int, float> fitnessFunction)
+        public GeneticAlgorithm(int populationSize, int dnaSize, float mutationRate, Func<T> getRandomGene, Func<int, float> fitnessFunction, Func<T[]> getRandomLongGene = null)
         {
             Generation = 1;
             MutationRate = mutationRate;
@@ -27,7 +27,15 @@ namespace Jigsaw_Puzzle.Scripts
             for (int i = 0; i < populationSize; i++)
             {
                 var dna = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-                dna.CreateRandomGenes();
+                // dna.CreateRandomGenes();
+                if (getRandomLongGene == null)
+                {
+                    dna.CreateRandomGenes();
+                }
+                else
+                {
+                    dna.CreateGenes(getRandomLongGene());
+                }
                 Population.Add(dna);
             }
         }

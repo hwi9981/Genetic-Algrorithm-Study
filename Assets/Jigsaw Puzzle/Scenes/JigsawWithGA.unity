@@ -233,14 +233,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 335746710}
-  - component: {fileID: 335746711}
+  - component: {fileID: 335746712}
   m_Layer: 0
   m_Name: GA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &335746710
 Transform:
   m_ObjectHideFlags: 0
@@ -256,7 +256,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &335746711
+--- !u!114 &335746712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 335746709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 234bc9f4a7cd2274e89525cf07727bac, type: 3}
+  m_Script: {fileID: 11500000, guid: fb88ac1904f055f40b4f1148be1d2bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _boardGen: {fileID: 661718380}
@@ -273,8 +273,8 @@ MonoBehaviour:
   _generationText: {fileID: 448146005}
   _bestFitnessText: {fileID: 668528631}
   populationSize: 200
-  mutationRate: 0.1
-  _speed: 5
+  mutationRate: 0.05
+  _speed: 3
 --- !u!1 &353776159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1355,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 335746711}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Jigsaw_Puzzle.Scripts.AIController, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
@@ -1623,7 +1623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1915921446
 MonoBehaviour:
   m_ObjectHideFlags: 0
