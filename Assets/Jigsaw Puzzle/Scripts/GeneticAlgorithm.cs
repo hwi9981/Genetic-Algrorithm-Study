@@ -27,15 +27,8 @@ namespace Jigsaw_Puzzle.Scripts
             for (int i = 0; i < populationSize; i++)
             {
                 var dna = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-                // dna.CreateRandomGenes();
-                if (getRandomLongGene == null)
-                {
-                    dna.CreateRandomGenes();
-                }
-                else
-                {
-                    dna.CreateGenes(getRandomLongGene());
-                }
+                dna.CreateRandomGenes();
+
                 Population.Add(dna);
             }
         }

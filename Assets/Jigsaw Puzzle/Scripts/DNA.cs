@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -50,24 +50,46 @@ namespace Jigsaw_Puzzle.Scripts
             DNA<T> child = new DNA<T>(Genes.Length, _getRandomGene, _fitnessFunction);
             for (int i = 0; i < Genes.Length; i++)
             {
-                child.Genes[i] = Random.value > 0.5f ?  Genes[i] : otherParent.Genes[i];
+                child.Genes[i] = Random.value > 0.5f ? Genes[i] : otherParent.Genes[i];
             }
             return child;
         }
-    
+
         public void Mutate(float mutationRate)
         {
             for (int i = 0; i < Genes.Length; i++)
             {
                 if (Random.value < mutationRate)
                 {
-                    // Genes[i] = _getRandomGene();
-                    //swap with a random gene in genes array
-                    int randomIndex = Random.Range(0, Genes.Length);
-                    (Genes[i], Genes[randomIndex]) = (Genes[randomIndex], Genes[i]);
+                    Genes[i] = _getRandomGene();
                 }
             }
         }
+
+        //public void Mutate(float mutationRate)
+        //{
+        //    // Tạo một mảng mới và sao chép dữ liệu từ Genes
+        //    T[] newGenes = new T[Genes.Length];
+        //    Array.Copy(Genes, newGenes, Genes.Length);
+
+        //    // Áp dụng đột biến bằng cách hoán đổi các phần tử ngẫu nhiên
+        //    for (int i = 0; i < newGenes.Length; i++)
+        //    {
+        //        if (Random.value < mutationRate)
+        //        {
+        //            int randomIndex = Random.Range(0, newGenes.Length);
+        //            (newGenes[i], newGenes[randomIndex]) = (newGenes[randomIndex], newGenes[i]);
+        //        }
+        //    }
+
+        //    // Cập nhật từng phần tử của Genes từ newGenes
+        //    for (int i = 0; i < Genes.Length; i++)
+        //    {
+        //        Genes[i] = newGenes[i];
+        //    }
+        //}
+
+
     }
 
 }
