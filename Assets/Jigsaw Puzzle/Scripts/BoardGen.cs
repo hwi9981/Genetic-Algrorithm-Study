@@ -111,6 +111,7 @@ namespace Jigsaw_Puzzle.Scripts
                     tile.transform.position = TileWorldPosition(row, column);
                     tile.name = $"({row} : {column})";
                     tile.Init(new Vector2Int(row, column), pieceSprite);
+                    tile.data.index = row * columns + column; // Gán index cho mảnh ghép
                     _tiles.Add(tile);
                 }
             }

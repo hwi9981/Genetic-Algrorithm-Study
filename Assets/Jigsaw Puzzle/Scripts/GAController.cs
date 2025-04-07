@@ -32,16 +32,7 @@ namespace Jigsaw_Puzzle.Scripts
             _ga = new GeneticAlgorithm<TileData>(populationSize, _boardGen.rows * _boardGen.columns, mutationRate,
                 GetRandomTile, EvaluateFitness, GetRandomTileArrangement);
         }
-
-        //void DisplayGenes(List<TileData> genes)
-        //{
-        //    _boardGen.RemoveAllTilesFromSlots();
-        //    for (int i = 0; i < _boardGen.GetTiles().Count; i++)
-        //    {
-        //        _boardGen.GetTiles()[i].CopyData(genes[i]);
-        //        _boardGen.StickTileToBoard(_boardGen.GetTiles()[i], _boardGen.GetTiles()[i].data.current.x, _boardGen.GetTiles()[i].data.current.y);
-        //    }
-        //}
+        
         void DisplayGenes(List<TileData> genes)
         {
             _boardGen.RemoveAllTilesFromSlots();
@@ -56,6 +47,19 @@ namespace Jigsaw_Puzzle.Scripts
                 _boardGen.GetTiles()[i].CopyData(genes[i]);
                 _boardGen.StickTileToBoard(_boardGen.GetTiles()[i], row, col);
             }
+
+            // DebugGeneIndex(genes);
+        }
+
+        void DebugGeneIndex(List<TileData> genes)
+        {
+            int columns = _boardGen.columns;
+            string indexstr = "";
+            for (int i = 0; i < genes.Count; i++)
+            {
+                indexstr += genes[i].index + ", ";
+            }
+            Debug.Log(indexstr);
         }
 
 
@@ -72,12 +76,12 @@ namespace Jigsaw_Puzzle.Scripts
                     _generationText.text = _ga.Generation.ToString();
                     _bestFitnessText.text = _ga.BestFitness.ToString("F2");
                     DisplayGenes(_ga.BestGenes.ToList());
-                    if (Mathf.Approximately(_ga.BestFitness, 1))
-                    {
-                        // Debug.Log("Result: " + _ga.Generation + " - " + _ga.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
-                        enabled = false;
-                        CheckComplete();
-                    }
+                    // if (Mathf.Approximately(_ga.BestFitness, 1))
+                    // {
+                    //     // Debug.Log("Result: " + _ga.Generation + " - " + _ga.BestGenes.Aggregate("", (current, t) => current + (t + " ")));
+                    //     enabled = false;
+                    //     CheckComplete();
+                    // }
                 }
             }
         }

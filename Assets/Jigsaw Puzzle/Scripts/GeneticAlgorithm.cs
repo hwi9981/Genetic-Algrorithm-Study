@@ -27,8 +27,15 @@ namespace Jigsaw_Puzzle.Scripts
             for (int i = 0; i < populationSize; i++)
             {
                 var dna = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-                dna.CreateRandomGenes();
-
+                
+                if (getRandomLongGene != null)
+                {
+                    dna.CreateGenes(getRandomLongGene());
+                }
+                else
+                {
+                    dna.CreateRandomGenes();
+                }
                 Population.Add(dna);
             }
         }
@@ -53,9 +60,9 @@ namespace Jigsaw_Puzzle.Scripts
                 }
                 else
                 {
-                    // DNA<T> parent1 = ChooseParent();
-                    // DNA<T> parent2 = ChooseParent();
                     ChooseParent(out var parent1, out var parent2);
+
+                    // var child = parent1;
                     var child = parent1.Crossover(parent2);
                     child.Mutate(MutationRate);
                     _newPopulation.Add(child);

@@ -41,8 +41,9 @@ namespace Jigsaw_Puzzle.Scripts
     }
 
     [System.Serializable]
-    public struct TileData
+    public class TileData
     {
+        public int index;
         public Vector2Int target;
         public Vector2Int current;
         public Sprite sprite;
